@@ -10,7 +10,7 @@ interface ChangeBaseUrlUseCase {
 class  ChangeBaseUrlUseCaseImpl @Inject constructor(
     val urlRepository: UrlRepository
 ) : ChangeBaseUrlUseCase{
-    override suspend fun invoke(baseUrl: String) {
+    override suspend operator fun invoke(baseUrl: String) {
         if (!baseUrl.contains(Regex("^https?://")))
             throw IllegalArgumentException("Invalid URL: $baseUrl")
        urlRepository.changeBaseUrl(baseUrl)

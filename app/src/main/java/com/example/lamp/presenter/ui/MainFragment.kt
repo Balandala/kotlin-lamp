@@ -1,15 +1,17 @@
 package com.example.lamp.presenter.ui
 
 import android.content.Context
-import androidx.core.text.set
+import android.os.Bundle
+import android.view.View
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.lamp.AppConstants
 import com.example.lamp.R
+import com.example.lamp.UiState
+import com.example.lamp.data.remote.dto.BrightnessLevelsDTO
 import com.example.lamp.databinding.FragmentMainBinding
 import com.example.lamp.di.ViewModelFactory
 import com.example.lamp.di.appComponent
-import com.example.lamp.domain.SetStateUseCase
 import com.example.lamp.presenter.MainViewModel
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
@@ -28,17 +30,68 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onAttach(context)
     }
 
-    override fun onStart() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.buttonOn.setOnClickListener { viewModel.setState(true) }
         binding.buttonOff.setOnClickListener { viewModel.setState(false) }
         binding.buttonChangeUrl.setOnClickListener {
             val baseUrl = binding.inputUrl.text.toString()
 
-            if (baseUrl.contains(Regex("^https?://")))
+            if (baseUrl.contains(Regex("^https?://"))) {
                 viewModel.changeBaseUrl(baseUrl)
+                viewModel.loadCurrentBrightness()
+                viewModel.loadBrightnessLevels()
+            }
         }
 
-        super.onStart()
+        viewModel.brightnessLevelsLiveData.observe(viewLifecycleOwner){
+            onBrightnessLevelsReceived(it)
+        }
+        viewModel.loadBrightnessLevels()
+
+        viewModel.currentBrightnessLiveData.observe(viewLifecycleOwner){
+            onCurrentBrightnessReceived(it)
+        }
+        viewModel.loadCurrentBrightness()
+
+        binding.brightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                viewModel.setBrightness(binding.brightnessSeekBar.progress)
+            }
+        })
+
+    }
+
+    private fun onBrightnessLevelsReceived(brightnessLevels: UiState<BrightnessLevelsDTO?>){
+        when (brightnessLevels) {
+            is UiState.Success -> {
+                val min = brightnessLevels.value?.min
+                val max = brightnessLevels.value?.max
+                binding.brightnessLayout.visibility = View.VISIBLE
+                binding.brightnessSeekBar.min = min!!
+                binding.brightnessSeekBar.max = max!!
+            }
+            is UiState.Loading -> {
+                binding.brightnessLayout.visibility = View.GONE
+            }
+            is UiState.Failure -> {
+                binding.brightnessLayout.visibility = View.GONE
+            }
+            else -> {}
+        }
+    }
+
+    private fun onCurrentBrightnessReceived(currentBrightness: UiState<Int?>?){
+        when (currentBrightness){
+            is UiState.Success -> {
+                binding.brightnessSeekBar.setProgress(currentBrightness.value!!)
+            }
+            else -> {}
+        }
     }
 
 

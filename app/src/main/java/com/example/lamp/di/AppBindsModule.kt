@@ -6,6 +6,12 @@ import com.example.lamp.data.remote.LampRepository
 import com.example.lamp.data.remote.LampRepositoryImpl
 import com.example.lamp.domain.ChangeBaseUrlUseCase
 import com.example.lamp.domain.ChangeBaseUrlUseCaseImpl
+import com.example.lamp.domain.GetBrightnessLevelsUseCase
+import com.example.lamp.domain.GetBrightnessLevelsUseCaseImpl
+import com.example.lamp.domain.GetCurrentBrightnessUseCase
+import com.example.lamp.domain.GetCurrentBrightnessUseCaseImpl
+import com.example.lamp.domain.SetBrightnessUseCase
+import com.example.lamp.domain.SetBrightnessUseCaseImpl
 import com.example.lamp.domain.SetStateUseCase
 import com.example.lamp.domain.SetStateUseCaseImpl
 import dagger.Binds
@@ -24,5 +30,14 @@ interface AppBindsModule {
 
     @Binds
     fun bindChangeBaseUrlUseCase(changeBaseUrlUseCaseImpl: ChangeBaseUrlUseCaseImpl) : ChangeBaseUrlUseCase
+
+    @Binds
+    fun bindGetBrightnessLevelsUseCase(getBrightnessLevelsUseCaseImpl: GetBrightnessLevelsUseCaseImpl) : GetBrightnessLevelsUseCase
+
+    @Binds
+    fun bindGetCurrentBrightnessUseCase(getCurrentBrightnessUseCaseImpl: GetCurrentBrightnessUseCaseImpl) : GetCurrentBrightnessUseCase
+
+    @Binds
+    fun bindSetBrightnessUseCase(setBrightnessUseCaseImpl: SetBrightnessUseCaseImpl) : SetBrightnessUseCase
 
 }
