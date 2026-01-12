@@ -14,7 +14,7 @@ object NetworkModule {
     @Provides
     fun provideLampService() : LampService =
         Retrofit.Builder()
-            .baseUrl("http://46.17.45.34:1337/")
+            .baseUrl("http://195.133.53.179:1337/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create()

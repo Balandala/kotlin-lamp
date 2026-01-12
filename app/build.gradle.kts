@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("androidx.navigation.safeargs")
     id("kotlin-kapt")
 }
 
@@ -56,9 +57,9 @@ dependencies {
 
     //navigation
     val navigation = "2.6.0"
-    implementation("androidx:navigation:navigation-fragment-ktx:$navigation")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigation")
     implementation("androidx.navigation:navigation-ui-ktx:${navigation}")
-    implementation("andoridx.navigation:navigation-dynamic-features-fragment:$navigation")
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navigation")
 
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
