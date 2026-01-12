@@ -1,6 +1,6 @@
 package com.example.lamp.domain
 
-import com.example.lamp.data.LampRepository
+import com.example.lamp.data.remote.LampRepository
 import javax.inject.Inject
 
 interface SetStateUseCase {

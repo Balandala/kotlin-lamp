@@ -1,4 +1,4 @@
-package com.example.lamp.data
+package com.example.lamp.data.remote
 
 import retrofit2.Response
 import retrofit2.http.POST

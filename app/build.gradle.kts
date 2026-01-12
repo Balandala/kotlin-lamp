@@ -52,6 +52,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.2.0")
+
     //vbpd
     implementation("dev.androidbroadcast.vbpd:vbpd:2.0.4")
 

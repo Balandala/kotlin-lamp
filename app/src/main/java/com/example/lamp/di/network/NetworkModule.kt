@@ -1,21 +1,25 @@
-package com.example.lamp.di
+package com.example.lamp.di.network
 
-import com.example.lamp.data.LampService
+import com.example.lamp.AppConstants
+import com.example.lamp.data.remote.LampService
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import javax.inject.Singleton
 
 @Module
 object NetworkModule {
 
     @Provides
-    fun provideLampService() : LampService =
+    fun provideLampService(
+        okHttpClient: OkHttpClient
+    ) : LampService =
         Retrofit.Builder()
-            .baseUrl("http://195.133.53.179:1337/")
+            .baseUrl(AppConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create()
 

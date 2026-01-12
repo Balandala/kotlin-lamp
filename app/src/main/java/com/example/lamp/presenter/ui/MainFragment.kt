@@ -1,8 +1,10 @@
 package com.example.lamp.presenter.ui
 
 import android.content.Context
+import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.lamp.AppConstants
 import com.example.lamp.R
 import com.example.lamp.databinding.FragmentMainBinding
 import com.example.lamp.di.ViewModelFactory
@@ -29,6 +31,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onStart() {
         binding.buttonOn.setOnClickListener { viewModel.setState(true) }
         binding.buttonOff.setOnClickListener { viewModel.setState(false) }
+        binding.buttonChangeUrl.setOnClickListener {
+            val baseUrl = binding.inputUrl.text.toString()
+
+            if (baseUrl.contains(Regex("^https?://")))
+                viewModel.changeBaseUrl(baseUrl)
+        }
+
         super.onStart()
     }
 
