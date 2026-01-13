@@ -8,8 +8,10 @@ import com.example.lamp.UiState
 import com.example.lamp.data.remote.dto.BrightnessLevelsDTO
 import com.example.lamp.domain.ChangeBaseUrlUseCase
 import com.example.lamp.domain.GetBrightnessLevelsUseCase
+import com.example.lamp.domain.GetColorsUseCase
 import com.example.lamp.domain.GetCurrentBrightnessUseCase
 import com.example.lamp.domain.SetBrightnessUseCase
+import com.example.lamp.domain.SetColorUseCase
 import com.example.lamp.domain.SetStateUseCase
 import com.example.lamp.toUiState
 import kotlinx.coroutines.launch
@@ -21,6 +23,8 @@ class MainViewModel @Inject constructor(
     private val getBrightnessLevelsUseCase: GetBrightnessLevelsUseCase,
     private val getCurrentBrightnessUseCase: GetCurrentBrightnessUseCase,
     private val setBrightnessUseCase: SetBrightnessUseCase,
+    private val getColorsUseCase: GetColorsUseCase,
+    private val setColorUseCase: SetColorUseCase,
 
 ) : ViewModel() {
 
@@ -46,6 +50,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private val _colorsLiveData = MutableLiveData<UiState<List<String>?>>(UiState.Loading)
+    val colorsLiveData: LiveData<UiState<List<String>?>>
+        get() = _colorsLiveData
+
+    fun loadAllColors(){
+        viewModelScope.launch {
+            val result = getColorsUseCase()
+            _colorsLiveData.postValue(result.toUiState())
+        }
+    }
+
+    fun setColor(color: String){
+        viewModelScope.launch {
+            setColorUseCase(color)
+        }
+    }
     fun setBrightness(level: Int){
         viewModelScope.launch {
             setBrightnessUseCase(level)
@@ -56,7 +76,6 @@ class MainViewModel @Inject constructor(
             setStateUseCase(isOn)
         }
     }
-
     fun changeBaseUrl(baseUrl: String){
         viewModelScope.launch {
             changeBaseUrlUseCase(baseUrl)

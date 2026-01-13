@@ -8,10 +8,14 @@ import com.example.lamp.domain.ChangeBaseUrlUseCase
 import com.example.lamp.domain.ChangeBaseUrlUseCaseImpl
 import com.example.lamp.domain.GetBrightnessLevelsUseCase
 import com.example.lamp.domain.GetBrightnessLevelsUseCaseImpl
+import com.example.lamp.domain.GetColorsUseCase
+import com.example.lamp.domain.GetColorsUseCaseImpl
 import com.example.lamp.domain.GetCurrentBrightnessUseCase
 import com.example.lamp.domain.GetCurrentBrightnessUseCaseImpl
 import com.example.lamp.domain.SetBrightnessUseCase
 import com.example.lamp.domain.SetBrightnessUseCaseImpl
+import com.example.lamp.domain.SetColorUseCase
+import com.example.lamp.domain.SetColorUseCaseImpl
 import com.example.lamp.domain.SetStateUseCase
 import com.example.lamp.domain.SetStateUseCaseImpl
 import dagger.Binds
@@ -39,5 +43,11 @@ interface AppBindsModule {
 
     @Binds
     fun bindSetBrightnessUseCase(setBrightnessUseCaseImpl: SetBrightnessUseCaseImpl) : SetBrightnessUseCase
+
+    @Binds
+    fun bindGetColorsUseCase(getColorsUseCaseImpl: GetColorsUseCaseImpl): GetColorsUseCase
+
+    @Binds
+    fun bindSetColorUseCase(setColorUseCaseImpl: SetColorUseCaseImpl) : SetColorUseCase
 
 }

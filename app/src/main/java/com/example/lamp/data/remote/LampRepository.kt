@@ -6,16 +6,12 @@ import retrofit2.Response
 import javax.inject.Inject
 
 interface LampRepository {
-
     suspend fun setState(isOn: Boolean): Result<Boolean?>
-
     suspend fun getBrightnessLevels(): Result<BrightnessLevelsDTO?>
-
     suspend fun getCurrentBrightness(): Result<Int?>
-
     suspend fun setBrightness(level: Int): Result<Boolean?>
-
-    suspend fun setColor(): Result<Boolean?>
+    suspend fun getColors(): Result<List<String>?>
+    suspend fun setColor(color: String): Result<Boolean?>
 }
 
 class LampRepositoryImpl @Inject constructor(
@@ -84,8 +80,34 @@ class LampRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun setColor(): Result<Boolean?> {
-        TODO("Not yet implemented")
+    override suspend fun getColors(): Result<List<String>?> {
+        kotlin.runCatching {
+            service.getColors()
+        }.fold(
+            onSuccess = {
+                return if (it.isSuccessful)
+                    Result.success(it.body())
+                else Result.failure(HttpException(it))
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
+    }
+
+    override suspend fun setColor(color: String): Result<Boolean?> {
+        kotlin.runCatching {
+            service.setColor(color)
+        }.fold(
+            onSuccess = {
+                return if (it.isSuccessful)
+                    Result.success(it.body())
+                else Result.failure(HttpException(it))
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
     }
 
 }
